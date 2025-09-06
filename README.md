@@ -1,84 +1,109 @@
 # NUVAMA-QDE-Test
-This repo is NUVAMA's - Quantitative Data Engineer – Take-Home Test
 
-project_structure/
-│── data/
-│   └── sample_tick_data.csv
-│── output/
-│   ├── results/
-│   ├── plots/
-│   └── reports/
-│── logs/
-│   └── app.log   # will be created automatically
-│── src/
-│   ├── __init__.py
-│   ├── io.py # Read the CSV data.
-│   ├── engine.py
-│   ├── analysis.py
-│   ├── utils.py
-│   ├── logging_config.py
-│   └── main.py
-│── requirements.txt
-│── README_QuantDE_THT.md
-│── README.md
+**NUVAMA — Quantitative Data Engineer (Take-Home Test)**
 
-**Brief summary**
+This repository contains a small, self-contained pipeline that loads tick data, resamples ticks to OHLC, runs a toy strategy, computes performance metrics, produces plots and a simple report, and writes runtime logs.
 
-__init__.py
-    - Makes src/ a Python package.
-    - Can hold version info or convenience imports, but usually left minimal.
+---
 
-io.py
-    - Handles input/output operations.
-    - Examples: load tick data from data/, save processed results to output/results/.
-    - Keeps all file-handling code in one place.
+## Project structure
+project_root/
+├── data/
+│ └── sample_tick_data.csv # raw tick CSV used for tests
+├── output/
+│ ├── results/ # CSV outputs (strategy, performance)
+│ ├── plots/ # generated charts (png/svg)
+│ └── reports/ # markdown/html/pdf reports
+├── logs/
+│ └── app.log # runtime logs (created automatically)
+├── src/
+│ ├── init.py # package marker & version
+│ ├── config.py # paths, resample rule, strategy defaults
+│ ├── io.py # data loading / saving helpers
+│ ├── engine.py # resampling + strategy / backtest logic
+│ ├── analysis.py # performance metrics, plotting, report creation
+│ ├── utils.py # helper utilities (e.g., make_dirs)
+│ ├── logging_config.py # centralized logging setup
+│ └── main.py # pipeline entry point / orchestrator
+├── requirements.txt # python dependencies
+├── README_QuantDE_THT.md # original task README
+└── README.md # user-facing README (this file)
 
-engine.py
-    - Core backtesting or strategy execution engine.
-    - Implements logic to transform tick data → resampled OHLC → apply trading rules → compute PnL & positions.
-    - Should be the “heart” of the system.
+---
 
-analysis.py
-    - Handles analytics and risk reporting.
-    - Examples: Sharpe ratio, drawdowns, stress tests, risk constraints.
-    - Generates reports/plots for output/reports/ and output/plots/.
+## Brief module summary
 
-utils.py
-    - General helper functions not specific to trading or analysis.
-    - Example: ensure folder structure exists (make_dirs()), small math helpers, config utilities.
-    - Keeps code DRY (don’t repeat yourself).
+- **`src/__init__.py`**  
+  Marks `src/` as a package; may hold package version or convenience imports.
 
-logging_config.py
-    - Centralized logging setup.
-    - Configures log formatting, console/file handlers, rotation.
-    - Ensures everything logs consistently to logs/app.log.
+- **`src/config.py`**  
+  Centralized constants and defaults (paths, resampling rule, strategy hyperparameters). Change here to affect the whole pipeline.
 
-main.py
-    - The entry point for running the project.
-    - Typical flow:
-        -Create folders (utils.make_dirs)
-        -Initialize logging (logging_config.configure_logging)
-        -Load tick data (io.load_tick_data)
-        -Run strategy (engine.run_strategy)
-        -Analyze results (analysis.generate_report)
-        -Save outputs (io.save_results, analysis.save_plot)
+- **`src/io.py`**  
+  File I/O helpers: reading raw tick CSV(s) and saving results.
 
-config.py
-    - Centralizes the project-wide constants and defaults so the rest of the code can import a single source of truth (paths, resampling rule, strategy hyper-parameters). Changing values in config.py alters behavior across the pipeline without editing multiple files.
+- **`src/engine.py`**  
+  Core data transformation and strategy logic (tick → OHLC → strategy → PnL/equity).
 
+- **`src/analysis.py`**  
+  Performance & risk analytics, plotting and simple report generation.
 
-**Steps to run**
-1.	Unzip to a folder or Forkthe git repo and take a git checkout.
-e.g.
-NUVAMA-QDE-Test.zip
-2.	Create venv
-e.g.
-cd C:\Users\Kshitij Pawar\Documents\NUVAMA\NUVAMA-QDE-Test
+- **`src/utils.py`**  
+  Small reusable helpers (e.g., `make_dirs()` to create required directories).
+
+- **`src/logging_config.py`**  
+  Central logging configuration (console + rotating file handler writing to `logs/app.log`).
+
+- **`src/main.py`**  
+  Entry point / orchestrator. Typical flow:
+  1. `utils.make_dirs()`  
+  2. `logging_config.configure_logging()`  
+  3. `io.load_tick_data()`  
+  4. `engine.resample_ticks_to_ohlc()` + `engine.run_*()`  
+  5. `analysis.compute_performance()` + `analysis.plot_equity()`  
+  6. Save outputs to `output/*`
+
+---
+
+### Quick file/folder meaning
+- **`data/`** — put your raw datasets here (do not commit large raw files).  
+- **`output/`** — runtime artifacts; safe to ignore in git or keep small, reproducible outputs.  
+- **`logs/`** — application logs; add to `.gitignore`.  
+- **`src/`** — implementation code. `main.py` runs the pipeline; the other modules are small, focused responsibilities.  
+- **`requirements.txt`** — pip installable dependencies; pin versions here for reproducibility.
+
+---
+
+## Requirements
+
+- Python 3.10+ recommended.
+- Minimal dependencies:
+    - pandas
+    - numpy
+    - matplotlib
+    - tabulate
+
+(Either install `tabulate` or use the fallback code that writes plain text if `tabulate` is absent.)
+
+Add these to `requirements.txt` or install them directly (examples below).
+
+---
+
+## Quick start — Windows (PowerShell)
+
+```powershell
+# from project root
+# 1. Create & activate venv
 python -m venv .venv
-..venv\Scripts\Activate.ps1
-3.	Install dependencies
-e.g.
+.venv\Scripts\Activate.ps1
+
+# 2. Install dependencies
 pip install -r requirements.txt
-6.	Run the project
-e.g.
+# or, minimal:
+# pip install pandas numpy matplotlib
+
+# 3. Install editable package (optional but recommended)
+pip install -e ./src
+
+# 4. Run pipeline
 python -m src.main
