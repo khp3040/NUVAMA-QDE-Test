@@ -30,7 +30,7 @@ project_root/
 ├── requirements.txt
 ├── README_QuantDE_THT.md
 └── README.md
----text
+```
 
 ---
 
