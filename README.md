@@ -7,27 +7,30 @@ This repository contains a small, self-contained pipeline that loads tick data, 
 ---
 
 ## Project structure
+
+```text
 project_root/
 ├── data/
-│ └── sample_tick_data.csv # raw tick CSV used for tests
+│   └── sample_tick_data.csv
 ├── output/
-│ ├── results/ # CSV outputs (strategy, performance)
-│ ├── plots/ # generated charts (png/svg)
-│ └── reports/ # markdown/html/pdf reports
+│   ├── results/        # csv outputs (strategy, performance)
+│   ├── plots/          # generated charts (png/svg)
+│   └── reports/        # markdown/html/pdf reports
 ├── logs/
-│ └── app.log # runtime logs (created automatically)
+│   └── app.log         # runtime logs (created automatically)
 ├── src/
-│ ├── init.py # package marker & version
-│ ├── config.py # paths, resample rule, strategy defaults
-│ ├── io.py # data loading / saving helpers
-│ ├── engine.py # resampling + strategy / backtest logic
-│ ├── analysis.py # performance metrics, plotting, report creation
-│ ├── utils.py # helper utilities (e.g., make_dirs)
-│ ├── logging_config.py # centralized logging setup
-│ └── main.py # pipeline entry point / orchestrator
-├── requirements.txt # python dependencies
-├── README_QuantDE_THT.md # original task README
-└── README.md # user-facing README (this file)
+│   ├── __init__.py     # package marker & version
+│   ├── config.py       # paths, resample rule, strategy defaults
+│   ├── io.py           # data loading / saving helpers
+│   ├── engine.py       # resampling + strategy/backtest logic
+│   ├── analysis.py     # performance metrics, plotting, report creation
+│   ├── utils.py        # helper utilities (e.g., make_dirs)
+│   ├── logging_config.py
+│   └── main.py         # pipeline entry point / orchestrator
+├── requirements.txt
+├── README_QuantDE_THT.md
+└── README.md
+
 
 ---
 
@@ -82,10 +85,6 @@ project_root/
     - numpy
     - matplotlib
     - tabulate
-
-(Either install `tabulate` or use the fallback code that writes plain text if `tabulate` is absent.)
-
-Add these to `requirements.txt` or install them directly (examples below).
 
 ---
 
