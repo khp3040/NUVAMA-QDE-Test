@@ -89,7 +89,7 @@ project_root/
 ---
 
 ## Quick start - Steps to run — Windows (PowerShell)
-Extract the zip or take a git clone of thr repo
+Extract the zip or take a git clone of the repo
 
 ```powershell
 # from project root
