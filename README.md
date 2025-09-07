@@ -88,7 +88,8 @@ project_root/
 
 ---
 
-## Quick start — Windows (PowerShell)
+## Quick start - Steps to run — Windows (PowerShell)
+Extract the zip or take a git clone of thr repo
 
 ```powershell
 # from project root
@@ -98,8 +99,6 @@ python -m venv .venv
 
 # 2. Install dependencies
 pip install -r requirements.txt
-# or, minimal:
-# pip install pandas numpy matplotlib
 
 # 3. Install editable package (optional but recommended)
 pip install -e ./src
